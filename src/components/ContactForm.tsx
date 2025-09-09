@@ -52,15 +52,27 @@ const ContactForm = () => {
 
     setIsSubmitting(true);
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    const email = {
+      to: ["sehaj.sk@gmail.com"],
+      data: {
+        domain_name: window.location.origin,
+        name: formData.fullName,
+        email: formData.email,
+        contact_number: formData.contactNumber,
+      },
+    };
+    await fetch(
+      "https://guideu.autovid.ai/api/v1/notification/domain-sale/send-email",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(email),
+      }
+    );
 
     // Log form data (as requested)
-    console.log("Domain Inquiry Submitted:", {
-      ...formData,
-      timestamp: new Date().toISOString(),
-      domain: window.location.hostname,
-    });
 
     setIsSubmitting(false);
     setIsSubmitted(true);

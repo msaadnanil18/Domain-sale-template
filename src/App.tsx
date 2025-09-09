@@ -18,7 +18,6 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
-        {/* sdesfd */}
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

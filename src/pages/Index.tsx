@@ -30,7 +30,7 @@ const Index = () => {
             className="mt-2 border-t border-border/50 text-center"
           >
             <p className="text-sm text-muted-foreground">
-              © 2024 Domain. All rights reserved. | Secure domain transfer
+              © 2025 Domain. All rights reserved. | Secure domain transfer
               guaranteed.
             </p>
           </motion.footer>
