@@ -12,11 +12,13 @@ import {
 } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { CheckCircle2, Send } from "lucide-react";
+import { Textarea } from "./ui/textarea";
 
 interface FormData {
   fullName: string;
   email: string;
   contactNumber: string;
+  message: string;
 }
 
 const ContactForm = () => {
@@ -24,6 +26,7 @@ const ContactForm = () => {
     fullName: "",
     email: "",
     contactNumber: "",
+    message: "",
   });
 
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -59,6 +62,7 @@ const ContactForm = () => {
         name: formData.fullName,
         email: formData.email,
         contact_number: formData.contactNumber,
+        message: formData.message,
       },
     };
     await fetch(
@@ -109,7 +113,12 @@ const ContactForm = () => {
               variant="outline"
               onClick={() => {
                 setIsSubmitted(false);
-                setFormData({ fullName: "", email: "", contactNumber: "" });
+                setFormData({
+                  fullName: "",
+                  email: "",
+                  contactNumber: "",
+                  message: "",
+                });
               }}
               className="animate-smooth hover:shadow-soft"
             >
@@ -126,10 +135,10 @@ const ContactForm = () => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: 0.2 }}
-      className="w-full max-w-md mx-auto"
+      // className="w-full max-w-md mx-auto"
     >
       <Card className="glass-card shadow-large">
-        <CardHeader className="text-center pb-4">
+        <CardHeader className="text-center pb-2">
           <CardTitle className="text-2xl font-bold">Get in Touch</CardTitle>
           <CardDescription className="text-base">
             Fill out the form below and we'll respond within 24 hours
@@ -192,6 +201,27 @@ const ContactForm = () => {
                 value={formData.contactNumber}
                 onChange={handleInputChange}
                 placeholder="Enter your phone number"
+                className="mt-2 animate-smooth focus:shadow-soft"
+                required
+              />
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+            >
+              <Label htmlFor="contactNumber" className="text-sm font-medium">
+                Message <span className=" opacity-50">(Optional)</span>
+              </Label>
+              <Textarea
+                id="message"
+                name="message"
+                type="text"
+                value={formData.contactNumber}
+                //@ts-ignore
+                onChange={handleInputChange}
+                placeholder="Enter your message"
                 className="mt-2 animate-smooth focus:shadow-soft"
                 required
               />

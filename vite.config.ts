@@ -4,11 +4,6 @@ import path from "path";
 import { viteSingleFile } from "vite-plugin-singlefile";
 
 export default defineConfig(({ mode }) => ({
-  // server: {
-  //   host: "::",
-  //   port: 3000,
-  //   allowedHosts: true,
-  // },
   plugins: [react(), viteSingleFile()],
   build: {
     target: "esnext",
