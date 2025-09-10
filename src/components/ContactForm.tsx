@@ -218,7 +218,7 @@ const ContactForm = () => {
                 id="message"
                 name="message"
                 type="text"
-                value={formData.contactNumber}
+                value={formData.message}
                 //@ts-ignore
                 onChange={handleInputChange}
                 placeholder="Enter your message"
