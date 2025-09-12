@@ -57,6 +57,7 @@ const ContactForm = () => {
 
     const email = {
       to: ["sehaj.sk@gmail.com"],
+      //to: ["adnan@exatorial.com"],
       data: {
         domain_name: window.location.origin,
         name: formData.fullName,
@@ -223,7 +224,6 @@ const ContactForm = () => {
                 onChange={handleInputChange}
                 placeholder="Enter your message"
                 className="mt-2 animate-smooth focus:shadow-soft"
-                required
               />
             </motion.div>
 
