@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -31,6 +31,7 @@ const ContactForm = () => {
 
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const emailInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,6 +40,25 @@ const ContactForm = () => {
       ...prev,
       [name]: value,
     }));
+    if (name === "email") {
+      const input = e.target;
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if (value && !emailRegex.test(value)) {
+        input.setCustomValidity(
+          "Please enter a valid email address (e.g., user@example.com)"
+        );
+      } else {
+        input.setCustomValidity("");
+      }
+    }
+  };
+
+  const validateEmail = (email: string): string => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email) return "Email is required.";
+    if (!emailRegex.test(email)) return "Please enter a valid email address.";
+    return "";
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -53,11 +73,22 @@ const ContactForm = () => {
       return;
     }
 
+    const emailError = validateEmail(formData.email);
+
+    if (emailError) {
+      if (emailInputRef.current && !emailInputRef.current.checkValidity()) {
+        emailInputRef.current.reportValidity();
+        return;
+      }
+
+      return;
+    }
+
     setIsSubmitting(true);
 
     const email = {
       to: ["sehaj.sk@gmail.com"],
-      //to: ["adnan@exatorial.com"],
+      // to: ["adnan@exatorial.com"],
       data: {
         domain_name: window.location.origin,
         name: formData.fullName,
@@ -76,8 +107,6 @@ const ContactForm = () => {
         body: JSON.stringify(email),
       }
     );
-
-    // Log form data (as requested)
 
     setIsSubmitting(false);
     setIsSubmitted(true);
@@ -146,7 +175,7 @@ const ContactForm = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} noValidate className="space-y-6">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -175,9 +204,12 @@ const ContactForm = () => {
               <Label htmlFor="email" className="text-sm font-medium">
                 Email Address
               </Label>
+
               <Input
+                ref={emailInputRef}
                 id="email"
                 name="email"
+                pattern="[^\s@]+@[^\s@]+\.[^\s@]+"
                 type="email"
                 value={formData.email}
                 onChange={handleInputChange}
