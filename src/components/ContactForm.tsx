@@ -12,7 +12,10 @@ import {
 } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { CheckCircle2, Send } from "lucide-react";
+import PhoneInput, { CountryData } from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 import { Textarea } from "./ui/textarea";
+import { cn } from "@/lib/utils";
 
 interface FormData {
   fullName: string;
@@ -36,6 +39,7 @@ const ContactForm = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+
     setFormData((prev) => ({
       ...prev,
       [name]: value,
@@ -88,7 +92,7 @@ const ContactForm = () => {
 
     const email = {
       to: ["sehaj.sk@gmail.com"],
-      // to: ["adnan@exatorial.com"],
+      //to: ["adnan@exatorial.com"],
       data: {
         domain_name: window.location.origin,
         name: formData.fullName,
@@ -224,19 +228,54 @@ const ContactForm = () => {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.5 }}
             >
-              <Label htmlFor="contactNumber" className="text-sm font-medium">
+              <Label htmlFor="contactNumber" className=" text-sm font-medium">
                 Contact Number
               </Label>
-              <Input
-                id="contactNumber"
-                name="contactNumber"
-                type="tel"
-                value={formData.contactNumber}
-                onChange={handleInputChange}
-                placeholder="Enter your phone number"
-                className="mt-2 animate-smooth focus:shadow-soft"
-                required
-              />
+
+              <div>
+                <PhoneInput
+                  inputProps={{
+                    id: "contactNumber",
+                    name: "contactNumber",
+                    required: true,
+                  }}
+                  containerStyle={{
+                    paddingTop: " 0.5rem",
+                  }}
+                  inputStyle={{
+                    borderRadius: "calc(var(--radius) - 2px)",
+                    width: " 100%",
+                    paddingTop: " 0.5rem",
+                    paddingBottom: " 0.5rem",
+                    backgroundColor: "hsl(var(--background))",
+                    height: "2.5rem",
+                  }}
+                  inputClass={cn(
+                    "flex rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm mt-2 animate-smooth focus:shadow-soft"
+                  )}
+                  buttonClass="!absolute !left-2 !top-[9px] !bg-transparent !border-none !z-10"
+                  country={"us"}
+                  value={formData.contactNumber}
+                  enableSearch
+                  searchStyle={{
+                    borderRadius: "calc(var(--radius) - 2px)",
+                    //  width: " 100%",
+                    paddingTop: " 0.5rem",
+                    paddingBottom: " 0.5rem",
+                    backgroundColor: "hsl(var(--background))",
+                    height: "2rem",
+                  }}
+                  onChange={(phone, data: CountryData, _, formattedValue) => {
+                    handleInputChange({
+                      //@ts-ignore
+                      target: {
+                        name: "contactNumber",
+                        value: [data.name, formattedValue].join(", "),
+                      },
+                    });
+                  }}
+                />
+              </div>
             </motion.div>
 
             <motion.div
